@@ -328,7 +328,7 @@ defmodule ElixirLS.LanguageServer.SourceFile do
 
     """
 
-    ```
+    ```elixir
     #{spec_str}
     ```
     """

@@ -18,7 +18,7 @@ defmodule ElixirLS.LanguageServer.SourceFileTest do
 
     assert SourceFile.format_spec(spec, line_length: 80) == """
 
-           ```
+           ```elixir
            @spec format_spec(String.t(), keyword()) :: String.t()
            ```
            """
@@ -29,7 +29,7 @@ defmodule ElixirLS.LanguageServer.SourceFileTest do
 
     assert SourceFile.format_spec(spec, line_length: 30) == """
 
-           ```
+           ```elixir
            @spec format_spec(
              String.t(),
              keyword()
