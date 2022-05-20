@@ -35,3 +35,5 @@ erl_crash.dump
 
 # Mkdocs static website build directory
 /site
+
+/result
