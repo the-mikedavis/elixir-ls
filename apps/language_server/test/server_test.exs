@@ -1024,7 +1024,7 @@ defmodule ElixirLS.LanguageServer.ServerTest do
   end
 
   @tag :fixture
-  test "reports build diagnostics", %{server: server} do
+  test "reports CompileError in build diagnostics", %{server: server} do
     in_fixture(__DIR__, "build_errors", fn ->
       error_file = SourceFile.path_to_uri("lib/has_error.ex")
 
@@ -1036,6 +1036,29 @@ defmodule ElixirLS.LanguageServer.ServerTest do
                          %{
                            "message" => "(CompileError) undefined function does_not_exist" <> _,
                            "range" => %{"end" => %{"line" => 3}, "start" => %{"line" => 3}},
+                           "severity" => 1
+                         }
+                       ]
+                     }),
+                     1000
+
+      wait_until_compiled(server)
+    end)
+  end
+
+  @tag :fixture
+  test "reports ArgumentError in build diagnostics", %{server: server} do
+    in_fixture(__DIR__, "argument_error_in_compile", fn ->
+      error_file = SourceFile.path_to_uri("lib/argument_error_in_compile.ex")
+
+      initialize(server)
+
+      assert_receive notification("textDocument/publishDiagnostics", %{
+                       "uri" => ^error_file,
+                       "diagnostics" => [
+                         %{
+                           "message" => "(ArgumentError) each element in tuple list has to be a {function_name :: atom, arity :: 0..255} tuple, got: [hello: 0]" <> _,
+                           "range" => %{"end" => %{"line" => -1}, "start" => %{"line" => -1}},
                            "severity" => 1
                          }
                        ]
